@@ -5,8 +5,11 @@
 #include <utility>
 #include <vector>
 
+#define CL_USE_DEPRECATED_OPENCL_1_2_APIS
+#define CL_HPP_MINIMUM_OPENCL_VERSION 110
+#define CL_HPP_TARGET_OPENCL_VERSION 110
 #define CL_HPP_ENABLE_EXCEPTIONS
-#include "cl/cl2.hpp"
+#include "CL/cl2.hpp"
 
 namespace compute
 {
@@ -26,6 +29,7 @@ namespace compute
 
         void init();
 
+        cl::Program create_program(const std::initializer_list<std::string>& sources);
         void add_source(const std::string& file_name);
 
         constexpr cl::Device& get_device()

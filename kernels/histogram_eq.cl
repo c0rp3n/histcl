@@ -2,19 +2,19 @@
 // #define T_MAX 255
 // #define STRIDE T_MAX + 1
 
-kernel void histogram_global(global const T* in_data,
-                             global size_t* histogram
-                             global T* out_data)
+kernel void histogram_eq_global(global const T* in_data,
+                                global size_t* histogram
+                                global T* out_data)
 {
     uint id = get_global_id(0);
 
     if (id < STRIDE)
     {
-
+        
     }
 }
 
-kernel void scan_hs(global int* A, global int* B)
+inline void scan_hs(global int* A, global int* B)
 {
     int id = get_global_id(0);
     int N = get_global_size(0);

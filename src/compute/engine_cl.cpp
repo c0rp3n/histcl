@@ -47,6 +47,38 @@ void engine_cl::init()
     }
 }
 
+cl::Program engine_cl::create_program(const std::initializer_list<std::string>& sources)
+{
+    cl::Program::Sources src;
+    for (const std::string& file_name : sources)
+    {
+        std::ifstream file(file_name);
+        if (file.good())
+        {
+            std::string* source_code = new std::string(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
+            src.push_back((*source_code).c_str());
+            // TODO should we not delete this
+            // delete source_code;
+        }
+    }
+    cl::Program program(this->context, src);
+
+    try
+    {
+        program.build();
+    }
+    catch (const cl::Error& err)
+    {
+        std::cout << "Build Status: " << program.getBuildInfo<CL_PROGRAM_BUILD_STATUS>(context.getInfo<CL_CONTEXT_DEVICES>()[0]) << std::endl;
+        std::cout << "Build Options:\t" << program.getBuildInfo<CL_PROGRAM_BUILD_OPTIONS>(context.getInfo<CL_CONTEXT_DEVICES>()[0]) << std::endl;
+        std::cout << "Build Log:\t " << program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(context.getInfo<CL_CONTEXT_DEVICES>()[0]) << std::endl;
+
+        throw err;
+    }
+
+    return program;
+}
+
 void engine_cl::add_source(const std::string& file_name)
 {
     std::ifstream file(file_name);

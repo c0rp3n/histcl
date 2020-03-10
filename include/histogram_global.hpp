@@ -14,6 +14,13 @@ void hist_eq(compute::engine_cl& engine, Array& data)
     constexpr auto stride = max + 1;
     std::array<size_t, stride> histogram;
 
-    static cl::Program program(engine.get_context(), engine.get_sources());
+    auto& context = engine.get_context();
     auto& queue = engine.get_queue();
+    static cl::Program program(engine.create_program(
+    {
+        "kernels/histogram_global.cl",
+        "kernels/histogram_eq.cl"
+    }));
+
+    cl::Buffer buffer_histogram(context, CL_MEM_READ_WRITE, stride);
 }

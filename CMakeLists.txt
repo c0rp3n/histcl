@@ -20,7 +20,6 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     set(CMAKE_CXX_FLAGS_RELEASE "/O2 /Ob2")
 endif()
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_executable(histcl
     src/compute/engine_cl.cpp
     src/main.cpp
@@ -32,6 +31,5 @@ set_target_properties(histcl
         CXX_STANDARD_REQUIRED ON
 )
 
-target_link_libraries(histcl PRIVATE OpenCL)
-
-terra_copy_kernels(histcl)
+target_include_directories(histcl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(histcl PUBLIC OpenCL)
